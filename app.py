@@ -44,29 +44,26 @@ def index():
 @app.route('/insert', methods = ['POST'])
 def insert():
     if request.method == 'POST':
-		name 	= request.form['name']
-		email 	= request.form['email']
-		coursecode 	= request.form['coursecode']
-		coursename 	= request.form['coursename']
-		rollno		= request.form['rollno']
-		startdate	=	request.form["startdate"]
-		enddate		=	request.form["enddate"]
+	name 	= request.form['name']
+	email 	= request.form['email']
+	coursecode 	= request.form['coursecode']
+	coursename 	= request.form['coursename']
+	rollno		= request.form['rollno']
+	startdate	=	request.form["startdate"]
+	enddate		=	request.form["enddate"]
 				
-		
-		finalstr 	= 	name.strip()+ email.strip() + coursecode.strip() + coursename.strip()
-		finalstr	=	finalstr + rollno.strip() + startdate.strip() + enddate.strip()
-		
-		datahash	=	 hashlib.md5(finalstr.encode()).hexdigest()  
+	finalstr 	= 	name.strip()+ email.strip() + coursecode.strip() + coursename.strip()
+	finalstr	=	finalstr + rollno.strip() + startdate.strip() + enddate.strip()
+	datahash	=	 hashlib.md5(finalstr.encode()).hexdigest()  
+	my_data = Crud(name, email, coursecode, rollno , coursename,startdate,enddate,datahash)
+	db.session.add(my_data)
+	db.session.commit()
 
-		my_data = Crud(name, email, coursecode, rollno , coursename,startdate,enddate,datahash)
-		db.session.add(my_data)
-		db.session.commit()
-
-		dstr 	= 	coursecode.strip() +','+ rollno.strip() +','+ name.strip()+','+  coursename.strip()
-		dstr	=	dstr +',' +email.strip()+',' +  startdate.strip() +','+ enddate.strip()+','+ datahash.strip()
+	dstr 	= 	coursecode.strip() +','+ rollno.strip() +','+ name.strip()+','+  coursename.strip()
+	dstr	=	dstr +',' +email.strip()+',' +  startdate.strip() +','+ enddate.strip()+','+ datahash.strip()
 		
-		flash("Data Inserted Successfully :  "+dstr)
-		return redirect(url_for('index'))
+	flash("Data Inserted Successfully :  "+dstr)
+	return redirect(url_for('index'))
 
 @app.route('/update', methods = ['POST'])
 def update():
