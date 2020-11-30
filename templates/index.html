@@ -13,7 +13,9 @@
         <div class="col-md-12">
             <div class="jumbotron p-3">
 
-                <h3>Manage <b>Students</b> <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Add new Student</button> </h3>
+                <h3>Manage <b>Certificate </b> Data on Blockchain
+				<button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Add Certificate Data</button> 
+				</h3>
 
                 {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
 
@@ -27,26 +29,34 @@
 
                 {% endfor %} {% endif %} {%endwith%}
 
-                <table class="table table-hover table-dark">
+                <table class="table table-hover table-lighter">
 
                     <tr>
-                        <th>ID</th>
+                        <!--<th>ID</th>-->
+						<th>Course Name</th>
+						<th>Course Code</th>
+						<th>Roll No</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Phone</th>
+                        
                         <th>Action</th>
                     </tr>
 
                     {% for row in all_data %}
-
+						
                     <tr>
-                        <td>{{row.id}}</td>
+                        <!--<td>{{row.id}}</td>-->
+						<td>{{row.coursename}}</td>
+						<td>{{row.coursecode}}</td>
+						<td>{{row.rollno}}</td>
                         <td>{{row.name}}</td>
                         <td>{{row.email}}</td>
-                        <td>{{row.phone}}</td>
+                        
                         <td>
-                            <a href="/update/{{row.id}}" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modaledit{{row.id}}">Edit</a>
-                            <a href="/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You sure To Delete ?')">Delete</a>
+                            <a href="/update/{{row.id}}" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modaledit{{row.id}}">Update Tx Id</a>
+                            <!--<a href="/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You sure To Delete ?')">Delete</a>
+							-->
+							<a href="https://rinkeby.etherscan.io/tx/{{row.bctransactionno}}"  target="_blank" class="btn btn-danger btn-xs"   >Blockchain View</a>
                         </td>
                     </tr>
 
@@ -55,12 +65,12 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title"> Update student Data </h4>
+                                    <h4 class="modal-title"> Update Blockchain Tx Id  </h4>
                                 </div>
                                 <div class="modal-body">
                                     <form action="{{url_for('update')}}" method="POST">
 
-                                        <div class="form-group">
+                                        <!--<div class="form-group">
                                             <label>Name</label>
                                             <input type="hidden" name="id" value="{{row.id}}">
                                             <input type="text" class="form-control" name="name" value="{{row.name}}" required="1">
@@ -70,10 +80,11 @@
                                             <label>Email</label>
                                             <input type="email" class="form-control" name="email" value="{{row.email}}" required="1">
                                         </div>
-
+										-->
                                         <div class="form-group">
-                                            <label>Phone</label>
-                                            <input type="number" class="form-control" name="phone" value="{{row.phone}}" required="1">
+                                            <label>Blockchain Transaction ID</label>
+											<input type="hidden" name="id" value="{{row.id}}">
+                                            <input type="text" class="form-control" name="bctransactionno" value="{{row.bctransactionno}}" required="1">
                                         </div>
 
                                         <div class="modal-footer">
@@ -86,6 +97,20 @@
                             </div>
                         </div>
                     </div>
+					
+					<!-- Model for view data on blockchain
+                    <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"> Data on Blockchain  </h4>
+                                </div>
+                                <div class="modal-body">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
 
                     {% endfor %}
 
@@ -104,9 +129,22 @@
                             <form action="{{url_for('insert')}}" method="POST">
 
                                 <div class="form-group">
+                                    <label>Course Name</label>
+                                    <input type="text" class="form-control" name="coursename" required="1">
+                                </div>
+								<div class="form-group">
+                                    <label>Course Code</label>
+                                    <input type="text" class="form-control" name="coursecode" required="1">
+                                </div>
+								<div class="form-group">
+                                    <label>Rollno</label>
+                                    <input type="Number" class="form-control" name="rollno" required="1">
+                                </div>
+								<div class="form-group">
                                     <label>Name</label>
                                     <input type="text" class="form-control" name="name" required="1">
                                 </div>
+								
 
                                 <div class="form-group">
                                     <label>Email</label>
@@ -114,9 +152,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Phone</label>
-                                    <input type="number" class="form-control" name="phone" required="1">
-                                </div>
+                                    <label>Course Start date</label>
+                                    <input type="text" class="form-control" name="startdate" required="1">
+                                </div> 
+								<div class="form-group">
+                                    <label>Course End date</label>
+                                    <input type="text" class="form-control" name="enddate" required="1">
+                                </div> 
 
                                 <div class="modal-footer">
                                     <button class="btn btn-success" type="submit"> Add student </button>
